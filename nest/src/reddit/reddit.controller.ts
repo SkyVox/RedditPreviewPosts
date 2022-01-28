@@ -72,7 +72,7 @@ export class RedditController {
     let ret = 0;
 
     try {
-      const data = await this.redditService.getValue(id, 'like_amount');
+      const data = await this.redditService.getData(id, 'like_amount');
 
       if (data) {
         ret = data.like_amount;
@@ -90,15 +90,26 @@ export class RedditController {
     const id = body.id;
     const ret = {};
 
-    const buildUpdate = (field: string) => {
-      const value = body[field];
-      if (value) {
-        ret[field] = value;
+    for (const property in body) {
+      if (property === 'id') continue;
+
+      if (property == 'comments') {
+        ret['$push'] = {
+          comments: body['comments']
+        }
+      } else if (body[property]) {
+        if (!ret['$inc']) ret['$inc'] = {};
+        ret['$inc'][property] = body[property];
       }
     }
-    
-    buildUpdate('like_amount');
-    buildUpdate('dislike_amount');
-    buildUpdate('comments');
+
+    try {
+      await this.redditService.updateData(id, ret);
+      return true;
+    } catch (error) {
+      console.error(error);
+    }
+
+    return false;
   }
 }

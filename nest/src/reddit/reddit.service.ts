@@ -11,7 +11,21 @@ export class RedditService {
   // Constructor.
   constructor(@InjectModel(Reddit.name) private redditModel: Model<RedditDocument>) {}
 
-  getValue(id: string, select_field: search_type) {
+  getData = async (id: string, select_field: search_type) => {
     return this.redditModel.findOne({ id: id.toLowerCase() }).select(select_field);
+  }
+
+  updateData = async (id: string, properties: object) => {
+    const options = {
+      upsert: true,
+      new: true,
+      setDefaultsOnInsert: true
+    };
+
+    return this.redditModel.findOneAndUpdate({ id: id }, properties, options).exec(function (error, response) {
+      if (error) {
+        console.error(error);
+      }
+    });
   }
 }
