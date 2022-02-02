@@ -43,7 +43,6 @@ export class RedditController {
     const cachedPost = this.requestedPosts.find(element => compareTopic(element.topic));
 
     if (cachedPost && cachedPost.request_date > currentDate) {
-      console.log('cached!');
       return cachedPost;
     } else {
       // We could edit the existing one instead of removing it.
