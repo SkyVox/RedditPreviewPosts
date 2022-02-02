@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { RedditService } from './reddit.service';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom, map } from 'rxjs';
@@ -31,7 +31,7 @@ export class RedditController {
   // Constructor.
   constructor(private readonly redditService: RedditService, private httpService: HttpService) {}
 
-  @Get('/:topic')
+  @Get('/topics/:topic')
   async findPosts(@Param('topic') topic: string): Promise<IPostValue> {
     const url = `https://www.reddit.com/r/${topic}.json`;
     const currentDate = new Date();
@@ -64,6 +64,21 @@ export class RedditController {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  @Get('/popular:limit?')
+  async popularTopics(@Query('limit') limit?: number | undefined) {
+    limit = limit ? limit : 5;
+    const url = `https://reddit.com/subreddits/popular.json?limit=${limit}`;
+
+    try {
+      const data = await this.httpService.get(url).pipe(map(ret => ret.data.data.children));
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+    
+    return [];
   }
 
   @Get('/like/:id')
