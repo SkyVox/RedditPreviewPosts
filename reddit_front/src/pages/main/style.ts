@@ -1,19 +1,5 @@
 import styled from 'styled-components';
 
-export const Wrapped = styled.div`
-    display: flex;
-    width: 100%;
-    height: 100%;
-`;
-
-export const CenteredDiv = styled.div`
-    display: flex;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-`;
-
 export const StyledBox = styled.div`
     padding: 150px;
     border-radius: 10px;
@@ -38,14 +24,14 @@ export const Input = styled.input`
 
 export const PopularTopicBox = styled.div`
     width: 100%;
-    text-align: center;
     color: var(--white);
+    text-align: center;
     font-weight: bold;
-    width: 100%;
     padding: 1em 2em;
+    margin: 5px;
+    border-radius: 5px;
     border: 1px solid var(--background-color);
     cursor: pointer;
-    border-radius: 10px;
 
     &:hover {
         color: var(--darker-gray);

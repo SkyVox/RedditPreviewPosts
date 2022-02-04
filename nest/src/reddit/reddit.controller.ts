@@ -49,21 +49,22 @@ export class RedditController {
       this.requestedPosts = this.requestedPosts.filter(element => !compareTopic(element.topic));
     }
 
+    const ret = {
+      topic: topic,
+      data: [],
+      request_date: new Date(currentDate.getTime() + 1 * 60000)
+    }
+
     try {
       const data = await lastValueFrom(this.httpService.get(url).pipe(map(ret => ret.data.data.children)));
+      ret['data'] = data;
       
-      const ret = {
-        topic: topic,
-        data: data,
-        request_date: new Date(currentDate.getTime() + 1 * 60000)
-      }
-
       this.requestedPosts.push(ret);
-
-      return ret;
     } catch (error) {
       console.error(error);
     }
+
+    return ret;
   }
 
   @Get('/popular:limit?')

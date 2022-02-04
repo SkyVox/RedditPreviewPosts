@@ -1,7 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
 import {
   Wrapped,
-  CenteredDiv,
+  CenteredDiv
+} from '../../global_style';
+import {
   StyledBox,
   Form,
   Label,
