@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Reddit, RedditDocument } from './schema/reddit.schema';
 
-type search_type = 'like_amount' | 'dislike_amount';
+type search_type = 'like_amount' | 'dislike_amount' | 'all';
 
 @Injectable()
 export class RedditService {
@@ -12,7 +12,8 @@ export class RedditService {
   constructor(@InjectModel(Reddit.name) private redditModel: Model<RedditDocument>) {}
 
   getData = async (id: string, select_field: search_type) => {
-    return this.redditModel.findOne({ id: id.toLowerCase() }).select(select_field);
+    const ret = this.redditModel.findOne({ id: id.toLowerCase() });
+    return select_field === 'all' ? ret.select("like_amount dislike_amount comments -_id") : ret.select(select_field);
   }
 
   updateData = async (id: string, properties: object) => {

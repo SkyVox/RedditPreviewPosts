@@ -1,8 +1,4 @@
 
 export const NotFound = () => {
-    return (
-        <>
-            An error has occurred!
-        </>
-    );
+    return (<h1>Page not found!</h1>);
 }

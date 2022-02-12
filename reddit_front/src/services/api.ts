@@ -18,6 +18,20 @@ const get = async (endpoint: string) => {
     }
 }
 
+const put = async (endpoint: string, data: object) => {
+    try {
+        const ret = await API_BASE.put(`/${endpoint}`, data);
+        if (ret) return ret.data;
+    } catch (error) {
+        handleError(error);
+    }
+    return false;
+}
+
+const REDDIT_URL: string = "https://reddit.com";
+
 export {
-    get
+    get,
+    put,
+    REDDIT_URL
 };

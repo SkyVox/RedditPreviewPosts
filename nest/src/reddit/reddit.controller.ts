@@ -100,6 +100,40 @@ export class RedditController {
     return ret;
   }
 
+  @Get('/dislike/:id')
+  async dislike(@Param('id') id: string) {
+    let ret = 0;
+
+    try {
+      const data = await this.redditService.getData(id, 'dislike_amount');
+
+      if (data) {
+        ret = data.like_amount;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    // Return the amount of stored likes that this post have.
+    return ret;
+  }
+
+  @Get('/data/:id')
+  async data(@Param('id') id: string) {
+    try {
+      const data = await this.redditService.getData(id, 'all');
+      if (data) return data;
+    } catch (error) {
+      console.error(error);
+    }
+
+    return {
+      like_amount: 0,
+      dislike_amount: 0,
+      comments: []
+    };
+  }
+
   @Put('/update')
   async update(@Body() body: IPostUpdate) {
     const id = body.id;
